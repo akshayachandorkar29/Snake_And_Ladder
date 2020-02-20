@@ -10,4 +10,11 @@ echo Welcome $username
 #constants
 player_position=0
 start_position=0
-win_position=0
+win_position=100
+
+#Rolling a Dice
+function die_roll()
+{
+	dice=$(( RANDOM%6 + 1 ))
+	echo $dice
+}
