@@ -1,0 +1,3 @@
+#!/bin/bash -x
+
+echo "---WELCOME TO THE WORLD OF SNAKE AND LADDER SIMULATOR---"
