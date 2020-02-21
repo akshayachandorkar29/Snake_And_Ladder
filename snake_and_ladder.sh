@@ -4,72 +4,131 @@
 echo "---WELCOME TO THE WORLD OF SNAKE AND LADDER SIMULATOR---"
 
 #USE CASE 1
-#taking user input
-read -p "Enter Username: " username
-echo Welcome $username
 
 #constants
-player_position=0
 start_position=0
 win_position=100
+
+#variables
+player1_position=$start_position
+player2_position=$start_position
+checkPlayer=1
 
 #USE CASE 2
 #Rolling a Dice
 function die_roll()
 {
 	randomCheck=$(( RANDOM%6 + 1 ))
-	echo $randomCheck
+	#echo $randomCheck
+	echo got $randomCheck when die rolled
 	(( die_roll_count++ ))
 }
 
 #USE CASE 3
 #random options
+#option0=NoPLAY
+#option1=LADDER
+#option2=SNAKE
+
 function random_option()
 {
 	option=$(( RANDOM%3 ))
-	echo $option
+	#echo $option
+	echo got $option option
+
+	case $option in
+         0)
+				if [[ $checkPlayer -eq 1 ]]
+				then
+            	player1_position=$player1_position
+           		echo player1 position is $player1_position
+					echo -----------------------------------------------------------------------------------------------------------------
+				else
+					player2_position=$player2_position
+               echo player2 position is $player2_position
+					echo -----------------------------------------------------------------------------------------------------------------
+				fi
+            ;;
+         1)
+				if [[ $checkPlayer -eq 1 ]]
+				then
+            	player1_position=$(( $player1_position + $randomCheck ))
+            	if [[ $player1_position -gt $win_position ]]
+            	then
+               	player1_position=$(( $player1_position - $randomCheck ))
+            	fi
+            	echo player1 position is $player1_position
+					echo -------------------------------------------------------------------------------------------------------------------
+				else
+					player2_position=$(( $player2_position + $randomCheck ))
+               if [[ $player2_position -gt $win_position ]]
+               then
+                  player2_position=$(( $player2_position - $randomCheck ))
+               fi
+               echo player2 position is $player2_position
+					echo -------------------------------------------------------------------------------------------------------------------
+				fi
+            ;;
+			2)
+				if [[ $checkPlayer -eq 1 ]]
+				then
+            	player1_position=$(( $player1_position - $randomCheck ))
+            	if [[ $player1_position -lt $start_position ]]  #chekin if pos of player goes below start pos
+            	then
+               	player1_position=$start_position  #setting player position to 0
+            	fi
+					echo player1 position is $player1_position
+					echo ------------------------------------------------------------------------------------------------------------------
+				else
+					player2_position=$(( $player2_position - $randomCheck ))
+               if [[ $player2_position -lt $start_position ]]  #chekin if pos of player goes below start pos
+               then
+                  player2_position=$start_position  #setting player position to 0
+               fi
+               echo player2 position is $player2_position
+					echo -------------------------------------------------------------------------------------------------------------------
+				fi
+            ;;
+	esac
 }
 
-#option 0 = No PLAY
-#option 1 = LADDER
-#option 2 = SNAKE
-#changing position according to option value
+function player1()
+{
+	echo "Player 1's turn"
+	die_roll
+	random_option
+}
+
+function player2()
+{
+	echo "Player 2's turn"
+	die_roll
+	random_option
+}
 
 #USE CASE 4
-function decide_player_position()
+function game()
 {
-	while [[ $player_position -ne $win_position ]]  #iterating till player wins
+	while [[ $player1_position -ne $win_position && $player2_position -ne $win_position ]]  #iterating till player wins
 	do
-		case $(random_option) in
-			0)
-				player_position=$player_position
-				echo player position is jhfj $player_position
-				;;
-			1)
-				die_roll
-				player_position=$(( $player_position + $randomCheck ))
-				if [[ $player_position -gt $win_position ]]
-				then
-					player_position=$(( $player_position - $randomCheck ))
-				fi
-				echo jdfahjfh $player_position
-
-#				if [[ $player_position -gt  $win_position ]]  #checking if position of player exceeds win position
-#				then
-#					player_position=$win_position  #setting player position to 100
-#				fi
-				;;
-			2)	die_roll
-				player_position=$(( $player_position - $randomCheck ))
-				if [[ $player_position -lt $start_position ]]  #chekin if pos of player goes below start pos
-				then
-					player_position=$start_position	#setting player position to 0
-				fi
-				;;
-		esac
+		if [[ $checkPlayer -eq 1 ]]
+		then
+			player1
+			checkPlayer=2
+		elif [[ $checkPlayer -eq 2 ]]
+		then
+			player2
+			checkPlayer=1
+		fi
 	done
 
-	echo final player position $player_position
 }
 
+game
 echo $die_roll_count
+if [[ $checkPlayer -eq 1 ]]
+then
+	echo player 2 won
+else
+	echo player 1 won
+fi
