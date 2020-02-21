@@ -1,4 +1,4 @@
-#!/bin/bash -x
+\#!/bin/bash -x
 
 echo "---WELCOME TO THE WORLD OF SNAKE AND LADDER SIMULATOR---"
 
@@ -28,22 +28,42 @@ function random_option()
 	echo $option
 }
 
-#option 1 = No PLAY
-#option 2 = LADDER
-#option 3 = SNAKE
+#option 0 = No PLAY
+#option 1 = LADDER
+#option 2 = SNAKE
 #changing position according to option value
-case $(random_option) in
-	0)
-		player_position=$player_position
-		;;
-	1)
-		player_position=$(( $player_position + $(die_roll) ))
-		;;
-	2)
-		player_position=$(( $player_position - $(die_roll) ))
-		;;
-	*)
-		echo "Invalid Option"
-		;;
-esac
+
+#USE CASE 4
+function decide_player_position()
+{
+	while [[ $player_position -ne $win_position ]]  #iterating till player wins
+	do
+		case $(random_option) in
+			0)
+				player_position=$player_position
+				;;
+			1)
+				player_position=$(( $player_position + $(die_roll) ))
+				if [[ $player_position -gt  $win_position ]]  #checking if position of player exceeds win position
+				then
+					player_position=$win_position  #setting player position to 100
+				fi
+				;;
+			2)
+				player_position=$(( $player_position - $(die_roll) ))
+				if [[ $player_position -lt $start_position ]]  #chekin if pos of player goes below start pos
+				then
+					player_position=$start_position	#setting player position to 0
+				fi
+				;;
+			*)
+				echo "Invalid Option"
+				;;
+		esac
+	done
+
+	echo $player_position
+}
+
+
 
