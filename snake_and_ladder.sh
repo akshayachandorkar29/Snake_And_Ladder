@@ -19,6 +19,7 @@ function die_roll()
 {
 	randomCheck=$(( RANDOM%6 + 1 ))
 	echo $randomCheck
+	(( die_roll_count++ ))
 }
 
 #USE CASE 3
@@ -71,6 +72,4 @@ function decide_player_position()
 	echo final player position $player_position
 }
 
-
-decide_player_position
-
+echo $die_roll_count
