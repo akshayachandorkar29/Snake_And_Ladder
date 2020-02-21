@@ -4,7 +4,6 @@
 echo "---WELCOME TO THE WORLD OF SNAKE AND LADDER SIMULATOR---"
 
 #USE CASE 1
-
 #constants
 start_position=0
 win_position=100
@@ -124,8 +123,13 @@ function game()
 
 }
 
+#calling main function game
 game
-echo $die_roll_count
+
+#printing dice count
+echo $die_roll_count times dice rolled to get the position 100
+
+#Printing WINNER of the SNAKE_AND_LADDER GAME
 if [[ $checkPlayer -eq 1 ]]
 then
 	echo player 2 won
