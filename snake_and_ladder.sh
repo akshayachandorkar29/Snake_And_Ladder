@@ -1,5 +1,6 @@
-\#!/bin/bash -x
+#!/bin/bash -x
 
+#declare -A randomCheck
 echo "---WELCOME TO THE WORLD OF SNAKE AND LADDER SIMULATOR---"
 
 #USE CASE 1
@@ -16,8 +17,8 @@ win_position=100
 #Rolling a Dice
 function die_roll()
 {
-	dice=$(( RANDOM%6 + 1 ))
-	echo $dice
+	randomCheck=$(( RANDOM%6 + 1 ))
+	echo $randomCheck
 }
 
 #USE CASE 3
@@ -41,29 +42,35 @@ function decide_player_position()
 		case $(random_option) in
 			0)
 				player_position=$player_position
+				echo player position is jhfj $player_position
 				;;
 			1)
-				player_position=$(( $player_position + $(die_roll) ))
-				if [[ $player_position -gt  $win_position ]]  #checking if position of player exceeds win position
+				die_roll
+				player_position=$(( $player_position + $randomCheck ))
+				if [[ $player_position -gt $win_position ]]
 				then
-					player_position=$win_position  #setting player position to 100
+					player_position=$(( $player_position - $randomCheck ))
 				fi
+				echo jdfahjfh $player_position
+
+#				if [[ $player_position -gt  $win_position ]]  #checking if position of player exceeds win position
+#				then
+#					player_position=$win_position  #setting player position to 100
+#				fi
 				;;
-			2)
-				player_position=$(( $player_position - $(die_roll) ))
+			2)	die_roll
+				player_position=$(( $player_position - $randomCheck ))
 				if [[ $player_position -lt $start_position ]]  #chekin if pos of player goes below start pos
 				then
 					player_position=$start_position	#setting player position to 0
 				fi
 				;;
-			*)
-				echo "Invalid Option"
-				;;
 		esac
 	done
 
-	echo $player_position
+	echo final player position $player_position
 }
 
 
+decide_player_position
 
